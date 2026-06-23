@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORBIT — Task Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-dot"></span>
+        ORBIT
+      </div>
+      <div class="header-actions">
+        <div class="search-wrapper">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <input type="text" id="global-search" class="global-search" placeholder="Buscar tareas..." />
+        </div>
+        <button class="btn-ghost" id="add-group-btn" title="Nuevo grupo">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+            <rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+            <rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M10.5 8v5M8 10.5h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          Nuevo grupo
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── STATS BAR ── -->
+  <div class="stats-strip">
+    <div class="stat-pill">
+      <span id="stat-total">0</span> tareas
+    </div>
+    <div class="stat-pill done-pill">
+      <span id="stat-done">0</span> completadas
+    </div>
+    <div class="stat-pill pend-pill">
+      <span id="stat-pending">0</span> pendientes
+    </div>
+    <div class="stats-progress-track">
+      <div class="stats-progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- ── MAIN ── -->
+  <main class="main" id="main-board">
+    <!-- Groups rendered by JS -->
+  </main>
+
+  <!-- ── TOAST ── -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ── MODAL: New Group ── -->
+  <div class="modal-overlay" id="group-modal" hidden>
+    <div class="modal">
+      <h2 class="modal-title">Nuevo grupo</h2>
+      <input type="text" id="group-name-input" class="modal-input" placeholder="Nombre del grupo..." maxlength="40" />
+      <div class="modal-color-row">
+        <span class="modal-label">Color</span>
+        <div class="color-swatches" id="color-swatches"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="group-modal-cancel">Cancelar</button>
+        <button class="btn-primary" id="group-modal-confirm">Crear grupo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: Task Detail ── -->
+  <div class="modal-overlay" id="task-modal" hidden>
+    <div class="modal modal-task">
+      <div class="modal-task-header">
+        <div class="task-modal-priority" id="modal-priority-badge"></div>
+        <button class="btn-icon modal-close" id="task-modal-close" aria-label="Cerrar">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <input type="text" id="modal-title-input" class="modal-task-title" placeholder="Título de la tarea" maxlength="120" />
+      <textarea id="modal-notes-input" class="modal-task-notes" placeholder="Agregar una nota... (Markdown básico soportado)"></textarea>
+      <div class="modal-task-meta">
+        <div class="meta-row">
+          <span class="meta-label">Prioridad</span>
+          <div class="priority-selector" id="modal-priority-selector">
+            <button class="prio-btn" data-prio="high">Alta</button>
+            <button class="prio-btn" data-prio="medium">Media</button>
+            <button class="prio-btn" data-prio="low">Baja</button>
+            <button class="prio-btn" data-prio="none">—</button>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Fecha límite</span>
+          <input type="date" id="modal-due-input" class="modal-date-input" />
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Grupo</span>
+          <select id="modal-group-select" class="modal-select"></select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" id="modal-delete-btn">Eliminar tarea</button>
+        <button class="btn-primary" id="modal-save-btn">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
