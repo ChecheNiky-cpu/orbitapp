@@ -1,119 +1,263 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ORBIT — Task Manager</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ORBIT — Task Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <!-- ── HEADER ── -->
-  <header class="header">
-    <div class="header-inner">
-      <div class="logo">
-        <span class="logo-dot"></span>
-        ORBIT
-      </div>
-      <div class="header-actions">
-        <div class="search-wrapper">
-          <svg class="search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-          <input type="text" id="global-search" class="global-search" placeholder="Buscar tareas..." />
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo"><span class="logo-dot"></span>ORBIT</div>
+    <div class="hdr-spacer"></div>
+    <div class="search-box">
+      <svg viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <input class="search-input" id="search-input" placeholder="Buscar..." autocomplete="off"/>
+      <span class="kbd-hint">Ctrl+K</span>
+    </div>
+    <div class="view-tabs">
+      <button class="vtab active" data-view="list">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 3h12M1 7h12M1 11h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Lista
+      </button>
+      <button class="vtab" data-view="kanban">
+        <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="3.5" height="12" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="5.5" y="1" width="3.5" height="8" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="10" y="1" width="3.5" height="10" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>Kanban
+      </button>
+      <button class="vtab" data-view="calendar">
+        <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M1 6h12M5 1v2M9 1v2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Calendario
+      </button>
+    </div>
+    <button class="btn-ghost" id="theme-btn" title="Cambiar tema">
+      <svg viewBox="0 0 14 14" fill="none" id="theme-icon"><path d="M7 1v1M7 12v1M1 7h1M12 7h1M2.9 2.9l.7.7M10.4 10.4l.7.7M2.9 11.1l.7-.7M10.4 3.6l.7-.7M7 4.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <button class="btn-ghost" id="export-btn" title="Exportar datos">
+      <svg viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 10v2a1 1 0 001 1h8a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Exportar
+    </button>
+    <label class="btn-ghost" title="Importar datos" style="cursor:pointer">
+      <svg viewBox="0 0 14 14" fill="none"><path d="M7 9V1M4 4l3-3 3 3M2 10v2a1 1 0 001 1h8a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Importar
+      <input type="file" id="import-input" accept=".json" style="display:none"/>
+    </label>
+    <button class="btn-ghost" id="templates-btn">
+      <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="7.5" y="1" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="1" y="7.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.4"/><path d="M10.25 7.5v5.5M7.5 10.25h5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Templates
+    </button>
+    <button class="btn-hdr" id="new-group-btn">
+      <svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Nuevo grupo
+    </button>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-in" id="filter-bar">
+    <button class="filter-chip active" data-status="all">Todas</button>
+    <button class="filter-chip" data-status="pending">Pendientes</button>
+    <button class="filter-chip" data-status="done">Completadas</button>
+    <div class="filter-sep"></div>
+    <button class="filter-chip active" data-prio-f="all">Todas las prioridades</button>
+    <button class="filter-chip" data-prio-f="high">Alta</button>
+    <button class="filter-chip" data-prio-f="medium">Media</button>
+    <button class="filter-chip" data-prio-f="low">Baja</button>
+    <div class="filter-sep"></div>
+    <select class="sort-sel" id="sort-sel">
+      <option value="manual">Manual</option>
+      <option value="name">A–Z</option>
+      <option value="priority">Prioridad</option>
+      <option value="due">Fecha límite</option>
+    </select>
+    <div class="filter-sep"></div>
+    <div class="filter-tags-wrap" id="tag-filters"></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-p"><b id="s-total">0</b> tareas</div>
+  <div class="stat-p" style="border-color:rgba(44,182,125,.3)"><b id="s-done" style="color:var(--done)">0</b> completadas</div>
+  <div class="stat-p"><b id="s-pend" style="color:var(--accent)">0</b> pendientes</div>
+  <div class="stat-p" id="s-overdue-pill" style="display:none;border-color:rgba(255,77,109,.3)"><b id="s-ov" style="color:var(--err)">0</b> vencidas</div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+</div>
+
+<!-- MAIN -->
+<main class="main" id="main"></main>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CMD PALETTE -->
+<div class="cmd-overlay" id="cmd-overlay" hidden>
+  <div class="cmd-box">
+    <div class="cmd-in-wrap">
+      <svg viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <input class="cmd-in" id="cmd-in" placeholder="Buscar tareas, grupos, acciones..." autocomplete="off"/>
+    </div>
+    <div class="cmd-results" id="cmd-results"></div>
+  </div>
+</div>
+
+<!-- MODAL: NEW GROUP -->
+<div class="overlay" id="group-modal" hidden>
+  <div class="modal modal-sm">
+    <div class="m-ttl">Nuevo grupo</div>
+    <input class="m-in" id="gm-name" placeholder="Nombre del grupo..." maxlength="40"/>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:.76rem;color:var(--txt3);font-weight:500;min-width:42px">Color</span>
+      <div class="color-swatches" id="gm-colors"></div>
+    </div>
+    <div class="m-actions">
+      <button class="btn-ghost" id="gm-cancel">Cancelar</button>
+      <button class="btn-pri" id="gm-confirm">Crear grupo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TEMPLATES -->
+<div class="overlay" id="tpl-modal" hidden>
+  <div class="modal modal-sm" style="max-width:460px">
+    <div class="m-ttl">Templates</div>
+    <p style="font-size:.8rem;color:var(--txt3)">Crea un conjunto de grupos preconfigurados con un clic.</p>
+    <div class="tpl-grid" id="tpl-grid"></div>
+    <div class="m-actions"><button class="btn-ghost" id="tpl-cancel">Cerrar</button></div>
+  </div>
+</div>
+
+<!-- MODAL: TASK DETAIL -->
+<div class="overlay" id="task-modal" hidden>
+  <div class="modal modal-lg td-modal">
+    <div class="td-top" style="display:flex;align-items:center;gap:10px;padding-bottom:14px">
+      <div id="td-prio-badge" style="flex-shrink:0"></div>
+      <input class="td-title-in" id="td-title" placeholder="Título de la tarea" maxlength="120" style="flex:1"/>
+      <button class="btn-ic" id="td-close">
+        <svg viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="td-body">
+      <!-- Notes -->
+      <div>
+        <div style="font-size:.72rem;color:var(--txt3);font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px">Notas <span style="font-size:.65rem;color:var(--txt3)">(Markdown)</span></div>
+        <div id="td-notes-container" style="position:relative">
+          <div class="notes-preview" id="td-notes-preview" style="display:none"></div>
+          <textarea class="td-notes" id="td-notes" placeholder="Escribe una nota... Soporta **negrita**, *cursiva*, `código`, ## títulos, - listas"></textarea>
         </div>
-        <button class="btn-ghost" id="add-group-btn" title="Nuevo grupo">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
-            <rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
-            <rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M10.5 8v5M8 10.5h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-          Nuevo grupo
-        </button>
+        <div style="display:flex;gap:6px;margin-top:4px">
+          <button class="btn-ghost" id="td-preview-btn" style="font-size:.72rem;padding:3px 8px">Vista previa</button>
+          <button class="btn-ghost" id="td-edit-btn" style="font-size:.72rem;padding:3px 8px;display:none">Editar</button>
+        </div>
       </div>
-    </div>
-  </header>
-
-  <!-- ── STATS BAR ── -->
-  <div class="stats-strip">
-    <div class="stat-pill">
-      <span id="stat-total">0</span> tareas
-    </div>
-    <div class="stat-pill done-pill">
-      <span id="stat-done">0</span> completadas
-    </div>
-    <div class="stat-pill pend-pill">
-      <span id="stat-pending">0</span> pendientes
-    </div>
-    <div class="stats-progress-track">
-      <div class="stats-progress-fill" id="progress-fill"></div>
-    </div>
-  </div>
-
-  <!-- ── MAIN ── -->
-  <main class="main" id="main-board">
-    <!-- Groups rendered by JS -->
-  </main>
-
-  <!-- ── TOAST ── -->
-  <div class="toast" id="toast"></div>
-
-  <!-- ── MODAL: New Group ── -->
-  <div class="modal-overlay" id="group-modal" hidden>
-    <div class="modal">
-      <h2 class="modal-title">Nuevo grupo</h2>
-      <input type="text" id="group-name-input" class="modal-input" placeholder="Nombre del grupo..." maxlength="40" />
-      <div class="modal-color-row">
-        <span class="modal-label">Color</span>
-        <div class="color-swatches" id="color-swatches"></div>
+      <!-- Meta -->
+      <div class="meta-grid">
+        <span class="meta-lbl">Prioridad</span>
+        <div class="prio-row" id="td-prio-row">
+          <button class="prio-opt" data-p="high">Alta</button>
+          <button class="prio-opt" data-p="medium">Media</button>
+          <button class="prio-opt" data-p="low">Baja</button>
+          <button class="prio-opt" data-p="none">—</button>
+        </div>
+        <span class="meta-lbl">Fecha límite</span>
+        <input class="m-date" type="date" id="td-due" style="width:auto"/>
+        <span class="meta-lbl">Grupo</span>
+        <select class="m-sel" id="td-group"></select>
+        <span class="meta-lbl">Etiquetas</span>
+        <div style="position:relative">
+          <div class="tags-input-wrap" id="td-tags-wrap">
+            <input class="tags-in" id="td-tags-in" placeholder="Agregar etiqueta..."/>
+          </div>
+          <div class="tag-suggestions" id="td-tag-sug" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0"></div>
+        </div>
       </div>
-      <div class="modal-actions">
-        <button class="btn-ghost" id="group-modal-cancel">Cancelar</button>
-        <button class="btn-primary" id="group-modal-confirm">Crear grupo</button>
+      <!-- Custom fields -->
+      <div id="td-cf-section">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:.72rem;color:var(--txt3);font-weight:600;letter-spacing:.07em;text-transform:uppercase">Campos personalizados</span>
+          <button class="btn-ghost" id="td-add-cf" style="font-size:.7rem;padding:2px 8px">+ Campo</button>
+        </div>
+        <div id="td-cf-list" style="display:flex;flex-direction:column;gap:5px"></div>
       </div>
-    </div>
-  </div>
-
-  <!-- ── MODAL: Task Detail ── -->
-  <div class="modal-overlay" id="task-modal" hidden>
-    <div class="modal modal-task">
-      <div class="modal-task-header">
-        <div class="task-modal-priority" id="modal-priority-badge"></div>
-        <button class="btn-icon modal-close" id="task-modal-close" aria-label="Cerrar">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
-        </button>
+      <!-- Subtasks -->
+      <div>
+        <div style="font-size:.72rem;color:var(--txt3);font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px">Subtareas</div>
+        <div class="subtasks-modal" id="td-subtasks"></div>
+        <div class="add-sub-modal">
+          <input class="m-in" id="td-sub-in" placeholder="Nueva subtarea..." style="font-size:.82rem;padding:6px 10px"/>
+          <button class="btn-ghost" id="td-sub-add">↵</button>
+        </div>
       </div>
-      <input type="text" id="modal-title-input" class="modal-task-title" placeholder="Título de la tarea" maxlength="120" />
-      <textarea id="modal-notes-input" class="modal-task-notes" placeholder="Agregar una nota... (Markdown básico soportado)"></textarea>
-      <div class="modal-task-meta">
-        <div class="meta-row">
-          <span class="meta-label">Prioridad</span>
-          <div class="priority-selector" id="modal-priority-selector">
-            <button class="prio-btn" data-prio="high">Alta</button>
-            <button class="prio-btn" data-prio="medium">Media</button>
-            <button class="prio-btn" data-prio="low">Baja</button>
-            <button class="prio-btn" data-prio="none">—</button>
+      <!-- Relations -->
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:.72rem;color:var(--txt3);font-weight:600;letter-spacing:.07em;text-transform:uppercase">Relaciones</span>
+          <div style="display:flex;gap:4px">
+            <button class="btn-ghost" data-rel-type="depende-de" style="font-size:.7rem;padding:2px 8px">+ Depende de</button>
+            <button class="btn-ghost" data-rel-type="bloquea" style="font-size:.7rem;padding:2px 8px">+ Bloquea</button>
           </div>
         </div>
-        <div class="meta-row">
-          <span class="meta-label">Fecha límite</span>
-          <input type="date" id="modal-due-input" class="modal-date-input" />
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">Grupo</span>
-          <select id="modal-group-select" class="modal-select"></select>
+        <div class="rel-section" id="td-relations"></div>
+        <div id="td-rel-picker" style="display:none;margin-top:6px">
+          <input class="m-in" id="td-rel-search" placeholder="Buscar tarea..." style="font-size:.82rem;padding:7px 10px"/>
+          <div id="td-rel-results" style="margin-top:4px;display:flex;flex-direction:column;gap:2px;max-height:140px;overflow-y:auto"></div>
         </div>
       </div>
-      <div class="modal-actions">
-        <button class="btn-danger" id="modal-delete-btn">Eliminar tarea</button>
-        <button class="btn-primary" id="modal-save-btn">Guardar</button>
+    </div>
+    <div class="comments-section">
+      <div style="font-size:.72rem;color:var(--txt3);font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px">Comentarios</div>
+      <div id="td-comments" style="display:flex;flex-direction:column;gap:6px"></div>
+      <div class="comment-input-row" style="margin-top:6px">
+        <div class="comment-avatar" style="flex-shrink:0">YO</div>
+        <textarea class="comment-in" id="td-comment-in" placeholder="Escribe un comentario..."></textarea>
+        <button class="btn-ghost" id="td-comment-send" style="padding:7px 12px;font-size:.78rem">Enviar</button>
+      </div>
+    </div>
+    <!-- History -->
+    <div class="history-section">
+      <button class="hist-toggle" id="hist-toggle">Mostrar historial de cambios</button>
+      <div class="history-list" id="td-history" style="display:none"></div>
+    </div>
+    <!-- Footer -->
+    <div class="td-footer">
+      <button class="btn-dng" id="td-delete">Eliminar tarea</button>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="btn-ghost" id="td-duplicate" title="Duplicar tarea">
+          <svg viewBox="0 0 14 14" fill="none" style="width:13px;height:13px"><rect x="1" y="4" width="8" height="9" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 4V3a1 1 0 011-1h7a1 1 0 011 1v8a1 1 0 01-1 1h-1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Duplicar
+        </button>
+        <button class="btn-ghost" id="td-cancel">Cancelar</button>
+        <button class="btn-pri" id="td-save">Guardar <span style="font-size:.7rem;opacity:.7">Ctrl+↵</span></button>
       </div>
     </div>
   </div>
+</div>
+
+<!-- SHORTCUTS PANEL -->
+<div class="shortcuts-overlay" id="shortcuts-overlay" hidden>
+  <div class="shortcuts-box">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="shortcuts-title">Atajos de teclado</div>
+      <button class="btn-ic" id="shortcuts-close"><svg viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="shortcuts-grid">
+      <div class="sc-row"><span class="sc-label">Paleta de comandos</span><div class="sc-keys"><span class="sc-kbd">Ctrl</span><span class="sc-kbd">K</span></div></div>
+      <div class="sc-row"><span class="sc-label">Nuevo grupo</span><div class="sc-keys"><span class="sc-kbd">N</span></div></div>
+      <div class="sc-row"><span class="sc-label">Buscar</span><div class="sc-keys"><span class="sc-kbd">/</span></div></div>
+      <div class="sc-row"><span class="sc-label">Cerrar modal</span><div class="sc-keys"><span class="sc-kbd">Esc</span></div></div>
+      <div class="sc-row"><span class="sc-label">Guardar tarea</span><div class="sc-keys"><span class="sc-kbd">Ctrl</span><span class="sc-kbd">↵</span></div></div>
+      <div class="sc-row"><span class="sc-label">Vista Lista</span><div class="sc-keys"><span class="sc-kbd">1</span></div></div>
+      <div class="sc-row"><span class="sc-label">Vista Kanban</span><div class="sc-keys"><span class="sc-kbd">2</span></div></div>
+      <div class="sc-row"><span class="sc-label">Vista Calendario</span><div class="sc-keys"><span class="sc-kbd">3</span></div></div>
+      <div class="sc-row"><span class="sc-label">Exportar datos</span><div class="sc-keys"><span class="sc-kbd">Ctrl</span><span class="sc-kbd">E</span></div></div>
+      <div class="sc-row"><span class="sc-label">Duplicar tarea</span><div class="sc-keys"><span class="sc-kbd">Ctrl</span><span class="sc-kbd">D</span></div></div>
+      <div class="sc-row"><span class="sc-label">Atajos</span><div class="sc-keys"><span class="sc-kbd">?</span></div></div>
+      <div class="sc-row"><span class="sc-label">Cambiar tema</span><div class="sc-keys"><span class="sc-kbd">T</span></div></div>
+    </div>
+  </div>
+</div>
 
   <script src="app.js"></script>
 </body>
