@@ -1,0 +1,26 @@
+{
+  "name": "ORBIT Task Manager",
+  "short_name": "ORBIT",
+  "description": "Gestor de tareas estilo Starlink con grupos, Kanban, calendario y colaboración.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06080f",
+  "theme_color": "#1a6cff",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["productivity", "utilities"]
+}
