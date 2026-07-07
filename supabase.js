@@ -6,8 +6,8 @@
 // ── CONFIGURACIÓN ──
 // Reemplaza estos valores con los de tu proyecto en supabase.com
 // Settings → API → Project URL y anon public key
-const SUPABASE_URL     = 'https://TU_PROYECTO.supabase.co';
-const SUPABASE_ANON_KEY = 'TU_ANON_KEY';
+const SUPABASE_URL     = 'https://byxqbvsjgmmhvaxbaksc.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5eHFidnNqZ21taHZheGJha3NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk3NjIwMDAsImV4cCI6MjAyNTMzODAwMH0.placeholder';
 
 // Inicializar cliente (requiere @supabase/supabase-js)
 // CDN: <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
